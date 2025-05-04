@@ -1,0 +1,91 @@
+[gd_scene load_steps=12 format=3 uid="uid://dhoygcx8o7178"]
+
+[ext_resource type="Script" uid="uid://dl8odyadg67cm" path="res://move_player.gd" id="1_f3sb7"]
+[ext_resource type="Script" uid="uid://n4fvngc3e8w3" path="res://move_camera.gd" id="1_fj7yv"]
+[ext_resource type="Texture2D" uid="uid://cl6tbubr2tkmp" path="res://debug_texture.png" id="1_tlwt5"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pkg7o"]
+albedo_texture = ExtResource("1_tlwt5")
+uv1_scale = Vector3(0.33, 0.5, 1)
+uv1_offset = Vector3(0, 0.5, 0)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fj7yv"]
+albedo_color = Color(4.09111e-06, 0.634216, 0, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tlwt5"]
+albedo_color = Color(1, 1, 0, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_aqk2v"]
+transparency = 1
+blend_mode = 1
+depth_draw_mode = 1
+albedo_color = Color(0, 1, 1, 0.521569)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_gv5m4"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dwbse"]
+transparency = 1
+albedo_color = Color(0.784314, 0.407843, 0.0196078, 0.619608)
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_f3sb7"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_036b0"]
+albedo_color = Color(1, 0, 0, 1)
+
+[node name="Node3D" type="Node3D"]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 0, 0)
+shadow_enabled = true
+
+[node name="Ground" type="CSGBox3D" parent="."]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 0, 11.6533)
+use_collision = true
+size = Vector3(30, 0.01, 30)
+material = SubResource("StandardMaterial3D_pkg7o")
+
+[node name="Camera Pivot" type="Node3D" parent="." node_paths=PackedStringArray("player")]
+script = ExtResource("1_fj7yv")
+player = NodePath("../Player")
+
+[node name="Camera3D" type="Camera3D" parent="Camera Pivot"]
+transform = Transform3D(-1, 1.87728e-08, -8.53834e-08, 0, 0.976672, 0.214735, 8.74228e-08, 0.214735, -0.976672, 0, 3.26473, -4.10256)
+
+[node name="Camera Representation" type="CSGSphere3D" parent="Camera Pivot/Camera3D"]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, -7.45058e-08, 0, 7.45058e-08, 0.5, 0, 0, 0)
+material = SubResource("StandardMaterial3D_fj7yv")
+
+[node name="Pivot Representation" type="CSGBox3D" parent="Camera Pivot"]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
+material = SubResource("StandardMaterial3D_tlwt5")
+
+[node name="Guide Linkage" type="CSGCylinder3D" parent="Camera Pivot"]
+transform = Transform3D(0.125, 0, 0, 0, 0.0767545, 0.0986594, 0, -0.0986595, 0.0767545, 0, 1.56791, -2.09508)
+height = 40.3567
+material = SubResource("StandardMaterial3D_aqk2v")
+
+[node name="Player" type="CharacterBody3D" parent="." node_paths=PackedStringArray("camera_pivot", "debugger_ball")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.06093, 0)
+disable_mode = 2
+script = ExtResource("1_f3sb7")
+camera_pivot = NodePath("../Camera Pivot")
+debugger_ball = NodePath("../Debugger Ball")
+run_multiplier = 2
+look_to_scale = 2
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Player"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.435064, 0)
+mesh = SubResource("CapsuleMesh_gv5m4")
+surface_material_override/0 = SubResource("StandardMaterial3D_dwbse")
+
+[node name="Nose" type="MeshInstance3D" parent="Player/MeshInstance3D"]
+transform = Transform3D(0.123831, 0, 0, 0, -7.90993e-09, -0.165606, 0, 0.180958, -7.23887e-09, 0, 0.435064, 0.599291)
+mesh = SubResource("CapsuleMesh_gv5m4")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Player"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.435064, 0)
+shape = SubResource("CapsuleShape3D_f3sb7")
+
+[node name="Debugger Ball" type="CSGSphere3D" parent="."]
+transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 0, 5.92641, 0.722494)
+material = SubResource("StandardMaterial3D_036b0")
