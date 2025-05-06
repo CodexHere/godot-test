@@ -48,10 +48,14 @@ material = SubResource("StandardMaterial3D_pkg7o")
 script = ExtResource("1_fj7yv")
 player = NodePath("../Player")
 
-[node name="Camera3D" type="Camera3D" parent="Camera Pivot"]
-transform = Transform3D(-1, 1.87728e-08, -8.53834e-08, 0, 0.976672, 0.214735, 8.74228e-08, 0.214735, -0.976672, 0, 3.26473, -4.10256)
+[node name="SpringArm3D" type="SpringArm3D" parent="Camera Pivot"]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 3.265, 0)
+spring_length = 4.0
 
-[node name="Camera Representation" type="CSGSphere3D" parent="Camera Pivot/Camera3D"]
+[node name="Camera3D" type="Camera3D" parent="Camera Pivot/SpringArm3D"]
+transform = Transform3D(1, 0, 0, 0, 0.975917, 0.218143, 0, -0.218143, 0.975917, 0, 0, 0)
+
+[node name="Camera Representation" type="CSGSphere3D" parent="Camera Pivot/SpringArm3D/Camera3D"]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, -7.45058e-08, 0, 7.45058e-08, 0.5, 0, 0, 0)
 material = SubResource("StandardMaterial3D_fj7yv")
 
@@ -89,3 +93,8 @@ shape = SubResource("CapsuleShape3D_f3sb7")
 [node name="Debugger Ball" type="CSGSphere3D" parent="."]
 transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 0, 5.92641, 0.722494)
 material = SubResource("StandardMaterial3D_036b0")
+
+[node name="Debug Wall" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.8627, 2.33911, 4.96953)
+use_collision = true
+size = Vector3(1, 5.67822, 13.1377)

@@ -1,5 +1,7 @@
 extends Node3D
 
+@export var signal_mappings: Dictionary[String, Callable] = {}
+
 @export var player: Node3D
 
 @export var sensitivity = 0.01
