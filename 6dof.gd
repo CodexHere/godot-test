@@ -9,6 +9,7 @@ extends CharacterBody3D
 
 var pitch: float = 0.0
 var yaw: float = 0.0
+var roll: float = 0.0
 
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
@@ -29,15 +30,15 @@ func handle_input(delta):
 		roll_input += 1.0
 	if Input.is_action_pressed("roll_right"):
 		roll_input -= 1.0
+	roll += roll_input * roll_speed * delta
 
-	# --- Compute rotation basis
-	var roll = roll_input * roll_speed * delta
+	# --- Compute rotation basis with accumulated yaw/pitch/roll
 	var basis = Basis(Vector3.UP, yaw) * Basis(Vector3.RIGHT, pitch) * Basis(Vector3.BACK, roll)
 	global_transform.basis = basis.orthonormalized()
 
 	# --- Movement input using axes
 	var forward := Input.get_action_strength("ui_up") - Input.get_action_strength("ui_down")
-	var strafe := Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left")
+	var strafe := Input.get_action_strength("ui_left") - Input.get_action_strength("ui_right")
 	var vertical := Input.get_action_strength("ui_accept") - Input.get_action_strength("hover_down")
 
 	var input_vector: Vector3 = (basis.z * forward) + (basis.x * strafe) + (basis.y * vertical)
