@@ -5,23 +5,12 @@
 [ext_resource type="Script" uid="uid://n4fvngc3e8w3" path="res://move_camera.gd" id="1_fj7yv"]
 [ext_resource type="Texture2D" uid="uid://cl6tbubr2tkmp" path="res://debug_texture.png" id="1_tlwt5"]
 [ext_resource type="Script" uid="uid://bhhf36ysrksit" path="res://fsm/state.gd" id="2_036b0"]
-[ext_resource type="Script" uid="uid://cj1se3v2erb88" path="res://fsm/context.gd" id="3_dwbse"]
+[ext_resource type="Script" uid="uid://c2av7thrgg7gq" path="res://6dof.gd" id="6_dwbse"]
 
-[sub_resource type="Resource" id="Resource_pkg7o"]
-script = ExtResource("3_dwbse")
-player_node_path = NodePath("")
-player_name = "CodexHere"
-player_highlight_color = Color(255, 50, 255, 1)
-player_anim_start = "Idle"
-player_anim_path = "mixamo_something"
-player_basis = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
-metadata/_custom_type_script = "uid://cj1se3v2erb88"
-
-[sub_resource type="Resource" id="Resource_dwbse"]
+[sub_resource type="Resource" id="Resource_036b0"]
 script = ExtResource("2_036b0")
 state_name = ""
-context = SubResource("Resource_pkg7o")
-children = Array[ExtResource("2_036b0")]([null])
+children = Array[ExtResource("2_036b0")]([])
 metadata/_custom_type_script = "uid://bhhf36ysrksit"
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pkg7o"]
@@ -52,11 +41,13 @@ albedo_color = Color(0.784314, 0.407843, 0.0196078, 0.619608)
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_036b0"]
 albedo_color = Color(1, 0, 0, 1)
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_dwbse"]
+
 [node name="Node3D" type="Node3D"]
 
 [node name="FiniteStateMachine" type="Node" parent="."]
 script = ExtResource("1_aqk2v")
-state = SubResource("Resource_dwbse")
+state = SubResource("Resource_036b0")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 0, 0)
@@ -122,3 +113,21 @@ material = SubResource("StandardMaterial3D_036b0")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.8627, 2.33911, 4.96953)
 use_collision = true
 size = Vector3(1, 5.67822, 13.1377)
+
+[node name="6DOF Movement" type="CharacterBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.93316, 12)
+script = ExtResource("6_dwbse")
+move_acceleration = 10.0
+move_deceleration = 20.0
+
+[node name="Camera3D" type="Camera3D" parent="6DOF Movement"]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0.775627, -0.00644016)
+current = true
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="6DOF Movement"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -12)
+shape = SubResource("BoxShape3D_dwbse")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="6DOF Movement"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.354553, 0)
+size = Vector3(1, 0.290894, 1)
