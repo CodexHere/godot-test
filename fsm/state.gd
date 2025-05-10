@@ -1,5 +1,5 @@
 # State.gd
-extends Node
+extends Resource
 class_name State
 
 @export var state_name: String
