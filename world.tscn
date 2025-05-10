@@ -1,19 +1,28 @@
-[gd_scene load_steps=15 format=3 uid="uid://dhoygcx8o7178"]
+[gd_scene load_steps=17 format=3 uid="uid://dhoygcx8o7178"]
 
-[ext_resource type="Script" uid="uid://bhhf36ysrksit" path="res://fsm/state.gd" id="1_aqk2v"]
+[ext_resource type="Script" uid="uid://drwfs8sdgi8ka" path="res://fsm/finite_state_machine.gd" id="1_aqk2v"]
 [ext_resource type="Script" uid="uid://dl8odyadg67cm" path="res://move_player.gd" id="1_f3sb7"]
 [ext_resource type="Script" uid="uid://n4fvngc3e8w3" path="res://move_camera.gd" id="1_fj7yv"]
 [ext_resource type="Texture2D" uid="uid://cl6tbubr2tkmp" path="res://debug_texture.png" id="1_tlwt5"]
-[ext_resource type="Script" uid="uid://cj1se3v2erb88" path="res://fsm/context.gd" id="2_036b0"]
+[ext_resource type="Script" uid="uid://bhhf36ysrksit" path="res://fsm/state.gd" id="2_036b0"]
+[ext_resource type="Script" uid="uid://cj1se3v2erb88" path="res://fsm/context.gd" id="3_dwbse"]
+
+[sub_resource type="Resource" id="Resource_pkg7o"]
+script = ExtResource("3_dwbse")
+player_node_path = NodePath("")
+player_name = "CodexHere"
+player_highlight_color = Color(255, 50, 255, 1)
+player_anim_start = "Idle"
+player_anim_path = "mixamo_something"
+player_basis = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+metadata/_custom_type_script = "uid://cj1se3v2erb88"
 
 [sub_resource type="Resource" id="Resource_dwbse"]
 script = ExtResource("2_036b0")
-player = {
-"highlight_color": Color(255, 0, 255, 1),
-"spawn_position": Vector3(0, 0, 0),
-"start_animation": "Idle"
-}
-metadata/_custom_type_script = "uid://cj1se3v2erb88"
+state_name = ""
+context = SubResource("Resource_pkg7o")
+children = Array[ExtResource("2_036b0")]([null])
+metadata/_custom_type_script = "uid://bhhf36ysrksit"
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pkg7o"]
 albedo_texture = ExtResource("1_tlwt5")
@@ -44,9 +53,10 @@ albedo_color = Color(0.784314, 0.407843, 0.0196078, 0.619608)
 albedo_color = Color(1, 0, 0, 1)
 
 [node name="Node3D" type="Node3D"]
+
+[node name="FiniteStateMachine" type="Node" parent="."]
 script = ExtResource("1_aqk2v")
-context = SubResource("Resource_dwbse")
-children = Array[ExtResource("1_aqk2v")]([null])
+state = SubResource("Resource_dwbse")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 0, 0)
